@@ -1,0 +1,11 @@
+[Unit]
+Description=Uwsgi systemd unit
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/uwsgi_django
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target

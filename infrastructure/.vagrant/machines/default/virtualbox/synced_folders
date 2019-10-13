@@ -1,0 +1,1 @@
+{"virtualbox":{"/educa":{"guestpath":"/educa","hostpath":"D:/Materials/Python/educa","disabled":false,"__vagrantfile":true},"/vagrant":{"guestpath":"/vagrant","hostpath":"D:/Materials/Python/educa/infrastructure","disabled":false,"__vagrantfile":true}}}

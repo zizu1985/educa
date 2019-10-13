@@ -1,0 +1,10 @@
+#!/bin/bash
+
+export UWSGI=/home/django/educa/venv/bin/uwsgi
+export LOGFILE=/home/django/educa/uwsgi.log
+export SVCUSER=django
+export GROUP=django
+export VASSALS=/opt/example/run
+export INIFILE=/home/django/educa/educa/config/uwsgi.ini
+
+exec $UWSGI --ini $INIFILE --die-on-term --uid $SVCUSER --gid $GROUP

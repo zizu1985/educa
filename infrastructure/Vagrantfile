@@ -1,0 +1,56 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Variables
+var_box            = 'bento/centos-7.2'  
+var_vm_name        = 'dockernode'
+var_mem_size       = 4096
+var_cpus           = 2
+var_non_rotational = 'on' # SSD
+
+Vagrant.configure("2") do |config|
+  config.vm.box = var_box
+  config.vm.box_check_update = true
+  
+  config.vm.network "forwarded_port", guest: 80, host: 81
+  config.vm.network "forwarded_port", guest: 5432, host: 5432
+  config.vm.synced_folder "../../educa", "/educa"
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = var_mem_size
+    vb.cpus   = var_cpus
+    vb.name   = var_vm_name    
+    vb.customize ['storageattach', :id, '--storagectl', 'SATA Controller', '--port', '0', '--nonrotational', var_non_rotational]
+  end
+
+#  config.vm.provision "shell", inline: <<-SHELL
+#    sh /vagrant/scripts/system.sh
+#  SHELL
+
+  config.vm.provision "shell", privileged: true, inline: <<-SHELL
+    sh /vagrant/scripts/node.sh
+  SHELL
+
+  config.vm.provision "shell", privileged: true, inline: <<-SHELL
+    sh /vagrant/scripts/postgresql_install.sh
+  SHELL
+
+  config.vm.provision "shell", privileged: true, inline: <<-SHELL
+    sh /vagrant/scripts/pre_deploy_root.sh
+  SHELL
+
+  config.vm.provision "shell", privileged: true, inline: <<-SHELL
+    sh /vagrant/scripts/pre_deploy_django.sh
+  SHELL
+
+  # Install and start uwsgi systemd daemon 
+  config.vm.provision "shell", privileged: true, inline: <<-SHELL
+    sh /vagrant/scripts/start_uwsgi.sh
+  SHELL
+
+    # Install and start uwsgi systemd daemon 
+  config.vm.provision "shell", privileged: true, inline: <<-SHELL
+    sh /vagrant/scripts/start_nginx.sh
+  SHELL
+
+end
