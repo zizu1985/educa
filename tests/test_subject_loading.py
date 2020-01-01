@@ -7,4 +7,4 @@ class SubjectTestLoading(TestCase):
     all_subjects = None
 
     def test_number_of_loaded(self):
-        self.assertEquals(Subject.objects.count(),4)
+        self.assertEquals(Subject.objects.count(), 4)
