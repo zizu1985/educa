@@ -14,6 +14,11 @@ class Subject(models.Model):
     def __str__(self):
         return self.title
 
+    @property
+    def is_correct_subject(self):
+        return str.isupper(str(self.title))
+
+
 
 class Course(models.Model):
     owner = models.ForeignKey(User,
